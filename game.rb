@@ -21,13 +21,15 @@ class GameWindow < Gosu::Window
     @text = Gosu::Font.new(self, './assets/victor-pixel.ttf', 32)
 
     @game = Game.new(World.new(@rows, @cols))
-    reset_game
-    title_screen
     soundtrack
+    title_screen
+    reset_game
   end
 
   def title_screen
+    @game_in_progress = false
   end
+
 
   def soundtrack # Game Soundtrack
     @soundtrack = [] 
@@ -38,6 +40,7 @@ class GameWindow < Gosu::Window
 
   def setup_game
     @game_in_progress = true
+    reset_game
   end
 
 
