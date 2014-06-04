@@ -5,8 +5,14 @@ require './lib/lifelogic'
 
 class GameWindow < Gosu::Window
 
-  ALIVE = Gosu::Color::RED
-  DEAD = Gosu::Color::BLACK
+  def color_picker
+  @color_pool = [Gosu::Color::BLUE, Gosu::Color::RED, Gosu::Color::GREEN]
+  gradient = @color_pool.shuffle.pop
+  return gradient
+  end
+
+  @alivecol = Gosu::Color::RED
+  @deadcol = Gosu::Color::BLACK
 
   attr_reader :width, :height, :game, :dx, :dy, :cols, :rows, :tone, :text
 
@@ -23,6 +29,12 @@ class GameWindow < Gosu::Window
     @text = Gosu::Font.new(self, './assets/victor-pixel.ttf', 32)
 
     @game = Game.new(World.new(@rows, @cols))
+    reset_game
+  end
+
+  def reset_game
+    @alivecol = color_picker
+    @deadcol = Gosu::Color::BLACK
     @game.world.randomly_populate
   end
  
@@ -34,7 +46,7 @@ class GameWindow < Gosu::Window
   def draw
     game.world.cells.each do |cell|
       col, row = cell.y, cell.x
-      color = cell.alive? ? ALIVE : DEAD
+      color = cell.alive? ? @alivecol : @deadcol
 
       draw_quad(  col * dx, row * dy + 20,       color,
         (col + 1) * dx - 1, row * dy + 20,       color,
@@ -56,8 +68,7 @@ class GameWindow < Gosu::Window
   def button_down(id)
     case id
     when Gosu::KbSpace  # space bar restarts game
-      @gen = 0
-      game.world.randomly_populate
+      reset_game
     when Gosu::KbQ # Q key quits
       close
     end
