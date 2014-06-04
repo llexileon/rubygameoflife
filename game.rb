@@ -5,15 +5,6 @@ require './lib/lifelogic'
 
 class GameWindow < Gosu::Window
 
-  def color_picker
-  @color_pool = [Gosu::Color::BLUE, Gosu::Color::RED, Gosu::Color::GREEN]
-  gradient = @color_pool.shuffle.pop
-  return gradient
-  end
-
-  @alivecol = Gosu::Color::RED
-  @deadcol = Gosu::Color::BLACK
-
   attr_reader :width, :height, :game, :dx, :dy, :cols, :rows, :tone, :text
 
   def initialize(width, height)
@@ -33,7 +24,8 @@ class GameWindow < Gosu::Window
   end
 
   def reset_game
-    @alivecol = color_picker
+    @gen = 0 
+    @alivecol = Gosu::Color::FUCHSIA
     @deadcol = Gosu::Color::BLACK
     @game.world.randomly_populate
   end
@@ -47,22 +39,22 @@ class GameWindow < Gosu::Window
     game.world.cells.each do |cell|
       col, row = cell.y, cell.x
       color = cell.alive? ? @alivecol : @deadcol
+      color.hue = "#{@transition}".to_i
 
-      draw_quad(  col * dx, row * dy + 20,       color,
-        (col + 1) * dx - 1, row * dy + 20,       color,
-                  col * dx, (row + 1) * dy + 19, color,
-        (col + 1) * dx - 1, (row + 1) * dy + 19, color)
+      draw_quad(  col * dx, row * dy,       color,
+        (col + 1) * dx - 1, row * dy,       color,
+                  col * dx, (row + 1) * dy, color,
+        (col + 1) * dx - 1, (row + 1) * dy, color)
     end
 
     live_cells = game.world.live_cells.count
-
-    # speed (sound pitch) on scale 0-100%
-    # more live cells => higher pitched sound
     speed = 100 * live_cells / (cols * rows)
+    @transition = speed * 10
+
     text.draw("Gen: #{@gen}", 10, 360, 50, 1, 1)
     text.draw("Live cells: #{live_cells}", 10, 385, 50, 1, 1)
     text.draw("Sound pitch: #{speed}", 10, 410, 50, 1, 1)
-    tone.play(10, speed) # volume, pitch
+    tone.play(10, speed) 
   end
 
   def button_down(id)
