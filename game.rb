@@ -41,19 +41,19 @@ class GameWindow < Gosu::Window
       color = cell.alive? ? @alivecol : @deadcol
       color.hue = "#{@transition}".to_i
 
-      draw_quad(  col * dx, row * dy,       color,
-        (col + 1) * dx - 1, row * dy,       color,
-                  col * dx, (row + 1) * dy, color,
-        (col + 1) * dx - 1, (row + 1) * dy, color)
+      draw_quad(  col * dx, row * dy + 40,     color,
+        (col + 1) * dx - 1, row * dy + 40,      color,
+                  col * dx, (row + 1) * dy + 40, color,
+        (col + 1) * dx - 1, (row + 1) * dy + 40, color)
     end
 
     live_cells = game.world.live_cells.count
     speed = 100 * live_cells / (cols * rows)
     @transition = speed * 10
 
-    text.draw("Gen: #{@gen}", 10, 360, 50, 1, 1)
-    text.draw("Live cells: #{live_cells}", 10, 385, 50, 1, 1)
-    text.draw("Sound pitch: #{speed}", 10, 410, 50, 1, 1)
+    text.draw("Gen: #{@gen}", 50, 0, 50, 1, 1)
+    text.draw("Live cells: #{live_cells}", 275, 0, 50, 1, 1)
+    text.draw("Pitch: #{speed}", 620, 0, 50, 1, 1)
     tone.play(10, speed) 
   end
 

@@ -40,7 +40,6 @@ class World
   end
 end
 
-# each individual square on board
 class Cell
   attr_reader :x, :y
   attr_accessor :alive
