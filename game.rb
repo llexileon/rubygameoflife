@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby -w
 
 require 'gosu'
-require './lib/lifelogic'
+require './lib/rules'
+require './lib/cell'
+require './lib/world'
 
 class GameWindow < Gosu::Window
 
@@ -96,9 +98,9 @@ class GameWindow < Gosu::Window
 
   def button_down(id)
     case id
-    when Gosu::KbSpace  # space bar restarts game
+    when Gosu::KbSpace
       reset_game
-    when Gosu::KbQ # Q key quits
+    when Gosu::KbQ
       close
     end
   end
