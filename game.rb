@@ -78,10 +78,10 @@ class GameWindow < Gosu::Window
       color = cell.alive? ? @alivecol : @deadcol
       color.hue = "#{@transition}".to_i
 
-      draw_quad(  col * dx, row * dy + 40,     color,
-        (col + 1) * dx - 1, row * dy + 40,      color,
-                  col * dx, (row + 1) * dy + 40, color,
-        (col + 1) * dx - 1, (row + 1) * dy + 40, color)
+      draw_quad(  col * dx, row * dy + 40, color,
+        (col + 1) * dx - 1, row * dy + 40, color,
+                  col * dx, (row + 1) * dy + 39, color,
+        (col + 1) * dx - 1, (row + 1) * dy + 39, color)
     end
 
     live_cells = game.world.live_cells.count
